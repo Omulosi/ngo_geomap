@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  {% load static %} {% load leaflet_tags %}
+  <head>
+    <title>NGO Office Map</title>
+    {% leaflet_js %} {% leaflet_css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css' %}"
+    />
+    <script src="{% static 'leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js' %}"></script>
+  </head>
+  <body>
+    <div style="text-center;text-align: center">
+      <h2>Office distrbution of some imaginary NGO</h2>
+      <p>
+        Head office: Grey Marker, Field offices: Red Marker, Regional Office:
+        Green Marker
+      </p>
+    </div>
+    <div
+      id="ngo_geomap"
+      style="height: 550px; width: 80%; margin: 5% auto 10% auto;"
+    ></div>
+  </body>
+
+  <script>
+    let map = L.map("ngo_geomap", {
+      center: [-0.397783, 36.960936],
+      zoom: 6.3,
+    });
+
+    let fieldOffices = L.geoJson(null, {
+      pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, {
+          icon: L.icon({
+            iconUrl: "static/img/red.png",
+            iconSize: [28, 32],
+            iconAnchor: [12, 28],
+            popupAnchor: [0, -25],
+          }),
+          title: feature.properties.title,
+          riseOnHover: true,
+        });
+      },
+      onEachFeature: function (feature, layer) {
+        if (feature.properties) {
+          let content = `
+            <table class='table table-striped table-bordered table-condensed'>
+            <tr><th>Title</th><td>${feature.properties.title}</td></tr>
+            <tr><th>Designation</th><td>${feature.properties.designation}</td></tr>
+            <tr><th>Physical features</th><td>${feature.properties.physical_features}</td></tr>
+            <tr><th>Area of coverage</th><td>${feature.properties.area_of_coverage}</td></tr>
+            <tr><th>Staff</th><td>${feature.properties.number_of_staff}</td></tr>
+            <tr><th>Issues addressed</th><td>${feature.properties.issues_addressed}</td></tr
+            <table>`;
+          layer.on({
+            click: function (e) {
+              layer.bindPopup(content).openPopup(e.latlng);
+            },
+          });
+        }
+      },
+    }).addTo(map);
+
+    let fieldOfficeUrl = "field_offices";
+    $.getJSON(fieldOfficeUrl, function (data) {
+      fieldOffices.addData(data);
+    });
+
+    let regionalOffices = L.geoJson(null, {
+      pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, {
+          icon: L.icon({
+            iconUrl: "static/img/green.png",
+            iconSize: [28, 32],
+            iconAnchor: [12, 28],
+            popupAnchor: [0, -25],
+          }),
+          title: feature.properties.title,
+          riseOnHover: true,
+        });
+      },
+      onEachFeature: function (feature, layer) {
+        if (feature.properties) {
+          let content = `
+          <table class='table table-striped table-bordered table-condensed'>
+          <tr><th>Title</th><td>${feature.properties.title}</td></tr>
+          <tr><th>Designation</th><td>${feature.properties.designation}</td></tr>
+          <tr><th>Physical features</th><td>${feature.properties.physical_features}</td></tr>
+          <tr><th>Area of coverage</th><td>${feature.properties.area_of_coverage}</td></tr>
+          <tr><th>Staff</th><td>${feature.properties.number_of_staff}</td></tr>
+          <tr><th>Issues addressed</th><td>${feature.properties.issues_addressed}</td></tr
+          <table>`;
+          layer.on({
+            click: function (e) {
+              layer.bindPopup(content).openPopup(e.latlng);
+            },
+          });
+        }
+      },
+    }).addTo(map);
+
+    let regionalOfficesUrl = "regional_offices";
+    $.getJSON(regionalOfficesUrl, function (data) {
+      regionalOffices.addData(data);
+    });
+
+    let headOffice = L.geoJson(null, {
+      pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, {
+          icon: L.icon({
+            iconUrl: "static/img/red.png",
+            iconSize: [28, 32],
+            iconAnchor: [12, 28],
+            popupAnchor: [0, -25],
+          }),
+          title: feature.properties.title,
+          riseOnHover: true,
+        });
+      },
+      onEachFeature: function (feature, layer) {
+        if (feature.properties) {
+          let content = `
+          <table class='table table-striped table-bordered table-condensed'>
+          <tr><th>Title</th><td>${feature.properties.title}</td></tr>
+          <tr><th>Designation</th><td>${feature.properties.designation}</td></tr>
+          <tr><th>Physical features</th><td>${feature.properties.physical_features}</td></tr>
+          <tr><th>Area of coverage</th><td>${feature.properties.area_of_coverage}</td></tr>
+          <tr><th>Staff</th><td>${feature.properties.number_of_staff}</td></tr>
+          <tr><th>Issues addressed</th><td>${feature.properties.issues_addressed}</td></tr
+          <table>`;
+          layer.on({
+            click: function (e) {
+              layer.bindPopup(content).openPopup(e.latlng);
+            },
+          });
+        }
+      },
+    }).addTo(map);
+
+    let headOfficesUrl = "head_office";
+    $.getJSON(regionalOfficesUrl, function (data) {
+      headOffice.addData(data);
+    });
+
+    let counties = L.geoJson(null, {
+      style: function colors(feature) {
+        switch (feature.properties.counties) {
+          case "WAJIR":
+            return {
+              color: "orange",
+              fillOpacity: 0.8,
+            };
+            break;
+        }
+      },
+      onEachFeature: function (feature, layer) {
+        if (feature.properties) {
+          let content = `
+            <table class='table table-striped table-bordered table-condensed'>
+            <tr><th>County Name</th><td>${feature.properties.counties}</td></tr>
+            <tr><th>Code</th><td>${feature.properties.cty_code}</td></tr>
+            <table>`;
+          layer.on({
+            click: function (e) {
+              layer.bindPopup(content).openPopup(e.latlng);
+            },
+          });
+        }
+      },
+    }).addTo(map);
+
+    let countiesUrl = "counties";
+    $.getJSON(countiesUrl, function (data) {
+      counties.addData(data);
+    });
+
+    let osm = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    });
+
+    let topo = L.tileLayer("http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+      maxZoom: 17,
+      attribution:
+        'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+    });
+    osm.addTo(map);
+
+    let baseLayers = {
+      "Open Street Map": osm,
+      "Topo Map": topo,
+    };
+
+    let groupedOverlays = {
+      "Point Data": {
+        fieldOffices: fieldOffices,
+        regionalOffices: regionalOffices,
+        headOffice: headOffice,
+      },
+      Other: {
+        "Administrative Boundaries": counties,
+      },
+    };
+
+    let layerControl = L.control
+      .groupedLayers(baseLayers, groupedOverlays)
+      .addTo(map);
+
+    // Add a scale bar
+    L.control.scale().addTo(map);
+  </script>
+</html>
