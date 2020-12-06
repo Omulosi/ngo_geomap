@@ -45,6 +45,9 @@ Run the application by starting the server
 python manage.py runserver
 ```
 
+## Sample Home Page
+![Alt text](./sample-home-pg.png?raw=true "Home Page Portal")
+
 ```
 
 ## Built With
