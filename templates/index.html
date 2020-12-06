@@ -18,7 +18,13 @@
   <body>
     <div style="text-center;text-align: center">
       <h2>Office distrbution of XYZ NGO</h2>
+      Legend: <br />
+      <p>
+        Head Office: Green marker | Regional Office: Grey marker | Field Office:
+        Red marker
+      </p>
     </div>
+    <hr />
     <div
       id="ngo_geomap"
       style="height: 550px; width: 80%; margin: 5% auto 10% auto;"
@@ -73,7 +79,7 @@
       pointToLayer: function (feature, latlng) {
         return L.marker(latlng, {
           icon: L.icon({
-            iconUrl: "static/img/green.png",
+            iconUrl: "static/img/marker.png",
             iconSize: [28, 32],
             iconAnchor: [12, 28],
             popupAnchor: [0, -25],
@@ -111,7 +117,7 @@
       pointToLayer: function (feature, latlng) {
         return L.marker(latlng, {
           icon: L.icon({
-            iconUrl: "static/img/red.png",
+            iconUrl: "static/img/green.png",
             iconSize: [28, 32],
             iconAnchor: [12, 28],
             popupAnchor: [0, -25],
@@ -140,8 +146,8 @@
       },
     }).addTo(map);
 
-    let headOfficesUrl = "head_office";
-    $.getJSON(regionalOfficesUrl, function (data) {
+    let headOfficesUrl = "head_offices";
+    $.getJSON(headOfficesUrl, function (data) {
       headOffice.addData(data);
     });
 
@@ -160,8 +166,8 @@
         if (feature.properties) {
           let content = `
             <table class='table table-striped table-bordered table-condensed'>
-            <tr><th>County Name</th><td>${feature.properties.counties}</td></tr>
-            <tr><th>Code</th><td>${feature.properties.cty_code}</td></tr>
+            <tr><th>County Name</th><td>${feature.properties.name}</td></tr>
+            <tr><th>Code</th><td>${feature.properties.city_code}</td></tr>
             <table>`;
           layer.on({
             click: function (e) {
