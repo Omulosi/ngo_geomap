@@ -1,6 +1,6 @@
 **Project**: Geojango NGO Project
 
-**Description**: Displays a geographical mapping of all offices of a fictitious NGO. 
+**Description**: Displays a geographical mapping of all offices of a fictitious NGO.
 
 ## Getting Started
 
@@ -35,7 +35,7 @@ $ python -m venv venv
 
 To activate the virtual environment run the command below
 ```python
-$ venv/bin/activate (linux environment)
+$ source venv/bin/activate (linux environment)
 ```
 
 
@@ -64,7 +64,7 @@ python manage.py runserver
 
 ## Author
 
-*   **John Paul** 
+*   **John Paul**
 
 ## License
 
