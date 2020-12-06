@@ -28,6 +28,11 @@ cd into the ngo_geomap folder
 cd ngo_geomap/
 ```
 
+Create a virtual environment
+```python
+$ python -m venv venv
+```
+
 To activate the virtual environment run the command below
 ```python
 $ venv/bin/activate (linux environment)
@@ -55,6 +60,7 @@ python manage.py runserver
 *   [Django](https://www.djangoproject.com/) - Django
 *   [GeoDjango](https://docs.djangoproject.com/en/3.1/ref/contrib/gis/) - GeoDjango
 *   [Django Leaflet](https://django-leaflet.readthedocs.io/en/latest/) - Django Leaflet
+*   Python3
 
 ## Author
 
